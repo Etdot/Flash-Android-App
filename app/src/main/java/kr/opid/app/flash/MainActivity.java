@@ -29,6 +29,7 @@ import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -40,7 +41,7 @@ public class MainActivity extends Activity {
     private Camera.Parameters p;
     boolean isOpenFlash;
     private CircularProgressBar circularProgressBarAndButton;
-    private int beforeBattery = 0;
+    private int mBeforeBattery = 0;
     private int currentBattery = 0;
     private RelativeLayout mainLayout;
     private String appVersion;
@@ -99,8 +100,9 @@ public class MainActivity extends Activity {
 
                     mainLayout.setBackgroundResource(R.drawable.bglayout_on);
                     isOpenFlash = true;
-                    beforeBattery = currentBattery;
+                    mBeforeBattery = currentBattery;
                     Toast.makeText(getApplicationContext(), "Turn on.", Toast.LENGTH_SHORT).show();
+                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 } else {
                     p = mCamera.getParameters();
                     p.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
@@ -113,6 +115,7 @@ public class MainActivity extends Activity {
                     currentBattery = (int) getBatteryLevel();
                     uiChangingHandler.sendEmptyMessage(1);
                     Toast.makeText(getApplicationContext(), "Turn off.", Toast.LENGTH_SHORT).show();
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 }
             }
         });
@@ -135,7 +138,7 @@ public class MainActivity extends Activity {
     // This UI handler is not use, because of the TemplateServiceListener.
     private Handler uiChangingHandler = new Handler() {
         public void handleMessage(Message msg) {
-            circularProgressBarAndButton.animateProgressTo(beforeBattery - 20, currentBattery, new ProgressAnimationListener() {
+            circularProgressBarAndButton.animateProgressTo(0, currentBattery, new ProgressAnimationListener() {
                 @Override
                 public void onAnimationStart() {
                 }

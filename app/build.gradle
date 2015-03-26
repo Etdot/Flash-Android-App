@@ -6,10 +6,10 @@ android {
 
     defaultConfig {
         applicationId "kr.opid.app.flash"
-        minSdkVersion 18
+        minSdkVersion 8
         targetSdkVersion 19
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
     }
 // 요기랑
     signingConfigs {
@@ -24,8 +24,8 @@ android {
         release {
             signingConfig signingConfigs.release    // 여기
             debuggable false // debugging 허용 안함
-            zipAlign true  // apk 최적화
-            runProguard false
+            zipAlignEnabled true  // apk 최적화
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
